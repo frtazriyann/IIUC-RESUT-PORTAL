@@ -1,84 +1,963 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>My Result</title>
-  <!-- External CSS link -->
-  <link rel="stylesheet" href="h.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Student Result Portal - View your academic results, GPA, and semester performance">
+<meta name="keywords" content="student results, GPA, academic portal, semester results">
+<meta name="author" content="Student Result Portal">
+<meta property="og:title" content="Student Result Portal">
+<meta property="og:description" content="View your academic results and performance">
+<meta property="og:type" content="website">
+<title>Student Result Portal</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+<style>
+/* ===== CSS VARIABLES ===== */
+:root {
+  --primary-color: #2563eb;
+  --primary-dark: #1d4ed8;
+  --primary-light: #3b82f6;
+  --secondary-color: #0f172a;
+  --accent-color: #f59e0b;
+  --success-color: #10b981;
+  --danger-color: #ef4444;
+  --warning-color: #f59e0b;
+  --info-color: #06b6d4;
+  --bg-gradient-start: #1e3a8a;
+  --bg-gradient-end: #0ea5e9;
+  --card-bg: #ffffff;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --border-color: #e2e8f0;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --transition: all 0.3s ease;
+}
+
+/* ===== RESET & BASE ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+/* ===== TYPOGRAPHY ===== */
+h1, h2, h3, h4 {
+  color: var(--secondary-color);
+  font-weight: 600;
+}
+
+/* ===== LOGIN CARD ===== */
+.login-container {
+  background: var(--card-bg);
+  padding: 40px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 400px;
+  animation: slideUp 0.5s ease;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.login-header .logo {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 15px;
+  font-size: 32px;
+}
+
+.login-header h2 {
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.login-header p {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* ===== FORM ELEMENTS ===== */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  transition: var(--transition);
+  background: #f8fafc;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-group input::placeholder {
+  color: #94a3b8;
+}
+
+.form-group input.error {
+  border-color: var(--danger-color);
+  animation: shake 0.5s ease;
+}
+
+.error-message {
+  color: var(--danger-color);
+  font-size: 13px;
+  margin-top: 8px;
+  display: none;
+  align-items: center;
+  gap: 5px;
+}
+
+.error-message.show {
+  display: flex;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+  width: 100%;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, var(--danger-color), #dc2626);
+}
+
+.btn-secondary:hover {
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* ===== SPINNER ===== */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: none;
+}
+
+.btn.loading .spinner {
+  display: block;
+}
+
+.btn.loading .btn-text {
+  display: none;
+}
+
+/* ===== RESULT CARD ===== */
+.result-card {
+  background: var(--card-bg);
+  width: 100%;
+  max-width: 1000px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 30px;
+  display: none;
+  animation: fadeIn 0.5s ease;
+}
+
+.result-card.show {
+  display: block;
+}
+
+/* ===== CARD HEADER ===== */
+.card-header {
+  text-align: center;
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.card-header h2 {
+  font-size: 28px;
+  margin-bottom: 5px;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.card-header .subtitle {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* ===== STUDENT INFO ===== */
+.student-info {
+  background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  margin-bottom: 25px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  border: 1px solid #bae6fd;
+}
+
+.student-photo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--primary-color);
+  flex-shrink: 0;
+}
+
+.student-details {
+  flex: 1;
+  min-width: 200px;
+}
+
+.student-details h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: var(--primary-dark);
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-item .label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-item .value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* ===== SEMESTER SECTION ===== */
+.semester-section {
+  margin-bottom: 30px;
+}
+
+.semester-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  border-radius: var(--radius-md);
+}
+
+.semester-header h3 {
+  color: white;
+  font-size: 18px;
+  margin: 0;
+}
+
+.semester-badge {
+  background: rgba(255,255,255,0.2);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* ===== TABLES ===== */
+.table-container {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+thead {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+}
+
+th {
+  padding: 14px 12px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--secondary-color);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #f59e0b;
+}
+
+td {
+  padding: 12px;
+  text-align: center;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+tbody tr {
+  transition: var(--transition);
+}
+
+tbody tr:hover {
+  background: #f8fafc;
+}
+
+tbody tr:nth-child(even) {
+  background: #fafbfc;
+}
+
+tbody tr:nth-child(even):hover {
+  background: #f1f5f9;
+}
+
+/* ===== TABLE FOOTER ===== */
+tfoot {
+  background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+}
+
+tfoot td {
+  font-weight: 600;
+  padding: 14px 12px;
+  border-bottom: none;
+}
+
+tfoot .total-row {
+  color: var(--primary-dark);
+}
+
+tfoot .gpa-row {
+  color: var(--success-color);
+  font-size: 15px;
+}
+
+/* ===== GRADE COLORS ===== */
+.grade-a-plus, .grade-a { color: #059669; font-weight: 600; }
+.grade-b-plus, .grade-b { color: #2563eb; font-weight: 600; }
+.grade-c-plus, .grade-c { color: #d97706; font-weight: 600; }
+.grade-d { color: #dc2626; font-weight: 600; }
+.grade-f, .grade-w { color: #991b1b; font-weight: 600; background: #fef2f2; }
+
+/* ===== CGPA BOX ===== */
+.cgpa-box {
+  margin-top: 20px;
+  padding: 20px 30px;
+  background: linear-gradient(135deg, #ecfeff, #cffafe);
+  border: 2px solid #0891b2;
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.cgpa-box .label {
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+}
+
+.cgpa-box .value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #0e7490;
+}
+
+.cgpa-box .value.high {
+  color: #059669;
+}
+
+.cgpa-box .value.medium {
+  color: #d97706;
+}
+
+.cgpa-box .value.low {
+  color: #dc2626;
+}
+
+/* ===== LOGOUT BUTTON ===== */
+.logout-section {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 2px solid var(--border-color);
+}
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--transition);
+}
+
+.modal-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal {
+  background: white;
+  padding: 30px;
+  border-radius: var(--radius-lg);
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  transform: scale(0.9);
+  transition: var(--transition);
+}
+
+.modal-overlay.show .modal {
+  transform: scale(1);
+}
+
+.modal h3 {
+  margin-bottom: 15px;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.modal-buttons button {
+  flex: 1;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+  body {
+    padding: 15px;
+  }
+
+  .login-container {
+    padding: 30px 25px;
+  }
+
+  .result-card {
+    padding: 20px 15px;
+  }
+
+  .student-info {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .student-photo {
+    margin: 0 auto;
+  }
+
+  .info-grid {
+    justify-content: center;
+  }
+
+  .semester-header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  th, td {
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+
+  .cgpa-box .value {
+    font-size: 28px;
+  }
+
+  .card-header h2 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    padding: 25px 20px;
+  }
+
+  .login-header .logo {
+    width: 60px;
+    height: 60px;
+    font-size: 28px;
+  }
+
+  .form-group input {
+    padding: 12px 14px;
+  }
+
+  .btn {
+    padding: 12px 20px;
+  }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  body {
+    background: white;
+  }
+
+  .result-card {
+    box-shadow: none;
+    padding: 10px;
+  }
+
+  .logout-section {
+    display: none;
+  }
+
+  .semester-section {
+    page-break-inside: avoid;
+  }
+}
+</style>
 </head>
 <body>
 
-  <div class="header">
-    <div class="info">
-      <p><b>Name: </b> Towsif Mostafa</p>
-      <p><b>MATRIC ID:</b> ET243031</p>
-      <p><b>Section:</b> A</p>
-      <p><b>Dept:</b> EEE</p>
-      <p><b>Session:</b> AUTUMN 24</p>
+<!-- LOGIN SCREEN -->
+<div class="login-container" id="loginBox" role="form" aria-labelledby="login-title">
+  <div class="login-header">
+    <div class="logo" aria-hidden="true">🎓</div>
+    <h2 id="login-title">Student Portal</h2>
+    <p>Access your academic results</p>
+  </div>
+  
+  <form id="loginForm" onsubmit="handleLogin(event)">
+    <div class="form-group">
+      <label for="user">Username</label>
+      <input 
+        type="text" 
+        id="user" 
+        placeholder="Enter your username"
+        autocomplete="username"
+        required
+        aria-describedby="user-error"
+      >
+      <span class="error-message" id="user-error" role="alert"></span>
     </div>
-    <img src="WhatsApp Image 2025-09-11 at 22.36.12_e583c414.jpg" alt="Profile Picture" class="profile-pic">
+    
+    <div class="form-group">
+      <label for="pass">Password</label>
+      <input 
+        type="password" 
+        id="pass" 
+        placeholder="Enter your password"
+        autocomplete="current-password"
+        required
+        aria-describedby="pass-error"
+      >
+      <span class="error-message" id="pass-error" role="alert"></span>
+    </div>
+    
+    <button type="submit" class="btn" id="loginBtn">
+      <span class="btn-text">Sign In</span>
+      <span class="spinner"></span>
+    </button>
+  </form>
+  
+  <p class="error-message show" id="error" style="margin-top: 15px; justify-content: center;"></p>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="result-card" id="resultCard">
+  <div class="card-header">
+    <h2>Academic Result Portal</h2>
+    <p class="subtitle">View your semester-wise academic performance</p>
   </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>SL</th>
-        <th>ISCED Code</th>
-        <th>Course Code</th>
-        <th>Course Name</th>
-        <th>Credit Hours</th>
-        <th>Grade</th>
-        <th>Point</th>
-        <th>Grade Point</th>
-        <th>Comments</th>
-      </tr>
-    </thead>
-    <tbody>
-<tr><td>1</td><td>0732</td><td>CE-1204</td><td>Engineering Drawing Sessional</td><td>1.00</td><td>A</td><td>3.75</td><td>3.75</td><td></td></tr>
- <tr><td>2</td><td>0613</td><td>CSE-1205</td><td>Computer Programming II</td><td>2.00</td><td>A+</td><td>4.00</td><td>8.00</td><td></td></tr>
-<tr><td>3</td><td>0613</td><td>CSE-1206</td><td>Computer Programming II Sessional</td><td>1.00</td><td>A</td><td>3.75</td><td>3.75</td><td></td></tr>
-      <tr><td>4</td><td>0713</td><td>EEE-1201</td><td>Electrical Circuits II</td><td>3.00</td><td>A</td><td>3.75</td><td>11.25</td><td></td></tr>
-      <tr><td>5</td><td>0713</td><td>EEE-1202</td><td>Electrical Circuits II Sessional and Electrical Workshop</td><td>1.50</td><td>A+</td><td>4.00</td><td>6.00</td><td></td></tr>
-      <tr><td>6</td><td>0221</td><td>GEED-1201</td><td>Basic Principles of Islam</td><td>2.00</td><td>A</td><td>3.75</td><td>7.50</td><td></td></tr>
-      <tr><td>7</td><td>0541</td><td>MATH-1207</td><td>Mathematics II (Differential Equation and Coordinate Geometry)</td><td>3.00</td><td>A+</td><td>4.00</td><td>12.00</td><td></td></tr>
-      <tr><td>8</td><td>0533</td><td>PHY-1201</td><td>Physics II</td><td>3.00</td><td>A</td><td>3.75</td><td>11.25</td><td></td></tr>
-      <tr><td>9</td><td>0533</td><td>PHY-1204</td><td>Physics Sessional</td><td>1.50</td><td>A+</td><td>4.00</td><td>6.00</td><td></td></tr>
-    </tbody>
-    <tfoot>
-      <tr>
-        <td colspan="4">Total Credit Hours</td>
-        <td>18</td>
-        <td colspan="2">GPA</td>
-        <td>3.86</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td colspan="4">Cumulative Credit Hours</td>
-        <td>34.5</td>
-        <td colspan="2">CGPA</td>
-        <td>3.40</td>
-        <td></td>
-      </tr>
-    </tfoot>
-  </table>
-  <div style="text-align: center; margin-top: 20px;">
-  <a href="https://www.iiuc.ac.bd" target="_blank">
-    <button style="
-      padding: 12px 25px;
-      font-size: 16px;
-      background-color: #2980b9;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s;
-    " 
-    onmouseover="this.style.backgroundColor='#3498db';" 
-    onmouseout="this.style.backgroundColor='#2980b9';">
-      Go to IIUC Website
+  <!-- ===== SEMESTER — AUTUMN 24 ===== -->
+  <div class="semester-section">
+    <div class="semester-header">
+      <h3>Autumn 2024</h3>
+      <span class="semester-badge">Completed</span>
+    </div>
+
+    <div class="student-info">
+      <img src="WhatsApp Image 2025-09-11 at 22.36.12_e583c414.jpg" alt="Student Photo" class="student-photo">
+      <div class="student-details">
+        <h3>Towsif Mostafa</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">MATRIC ID</span>
+            <span class="value">ET243031</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Section</span>
+            <span class="value">A</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Department</span>
+            <span class="value">EEE</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Session</span>
+            <span class="value">AUTUMN 24</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">SL</th>
+            <th scope="col">ISCED</th>
+            <th scope="col">Code</th>
+            <th scope="col">Course</th>
+            <th scope="col">Credit</th>
+            <th scope="col">Grade</th>
+            <th scope="col">Point</th>
+            <th scope="col">GP</th>
+            <th scope="col">Comments</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>0732</td><td>CE-1204</td><td>Engineering Drawing Sessional</td><td>1.00</td><td class="grade-a">A</td><td>3.75</td><td>3.75</td><td>-</td></tr>
+          <tr><td>2</td><td>0613</td><td>CSE-1205</td><td>Computer Programming II</td><td>2.00</td><td class="grade-a-plus">A+</td><td>4.00</td><td>8.00</td><td>-</td></tr>
+          <tr><td>3</td><td>0613</td><td>CSE-1206</td><td>Programming II Sessional</td><td>1.00</td><td class="grade-a">A</td><td>3.75</td><td>3.75</td><td>-</td></tr>
+          <tr><td>4</td><td>0713</td><td>EEE-1201</td><td>Electrical Circuits II</td><td>3.00</td><td class="grade-a">A</td><td>3.75</td><td>11.25</td><td>-</td></tr>
+          <tr><td>5</td><td>0713</td><td>EEE-1202</td><td>Circuits Sessional</td><td>1.50</td><td class="grade-a-plus">A+</td><td>4.00</td><td>6.00</td><td>-</td></tr>
+          <tr><td>6</td><td>0221</td><td>GEED-1201</td><td>Basic Principles of Islam</td><td>2.00</td><td class="grade-a">A</td><td>3.75</td><td>7.50</td><td>-</td></tr>
+          <tr><td>7</td><td>0541</td><td>MATH-1207</td><td>Mathematics II</td><td>3.00</td><td class="grade-a-plus">A+</td><td>4.00</td><td>12.00</td><td>-</td></tr>
+          <tr><td>8</td><td>0533</td><td>PHY-1201</td><td>Physics II</td><td>3.00</td><td class="grade-a">A</td><td>3.75</td><td>11.25</td><td>-</td></tr>
+          <tr><td>9</td><td>0533</td><td>PHY-1204</td><td>Physics Sessional</td><td>1.50</td><td class="grade-a-plus">A+</td><td>4.00</td><td>6.00</td><td>-</td></tr>
+        </tbody>
+        <tfoot>
+          <tr class="total-row">
+            <td colspan="4">Total Credit</td>
+            <td>18</td>
+            <td colspan="2">GPA</td>
+            <td class="gpa-row">3.86</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td colspan="4">Cumulative Credit</td>
+            <td>34.5</td>
+            <td colspan="2">CGPA</td>
+            <td class="gpa-row">3.40</td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== SEMESTER — CURRENT ===== -->
+  <div class="semester-section">
+    <div class="semester-header">
+      <h3>Autumn 2025</h3>
+      <span class="semester-badge">Current</span>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">SL</th>
+            <th scope="col">Course Code</th>
+            <th scope="col">Course Name</th>
+            <th scope="col">Credit</th>
+            <th scope="col">Grade</th>
+            <th scope="col">Point</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>CHEM-1201</td><td>Chemistry</td><td>3.00</td><td class="grade-c">B+</td><td>3.25</td></tr>
+          <tr><td>2</td><td>CHEM-1204</td><td>Chemistry Sessional</td><td>1.50</td><td class="grade-a">A</td><td>3.75</td></tr>
+          <tr><td>3</td><td>EEE-1201</td><td>Electrical Circuits II</td><td>3.00</td><td class="grade-d">A-</td><td>3.50</td></tr>
+          <tr><td>4</td><td>EEE-2201</td><td>Electronics I</td><td>3.00</td><td class="grade-f">F</td><td>0.00</td></tr>
+          <tr><td>5</td><td>EEE-2202</td><td>Electronics I Sessional</td><td>1.50</td><td class="grade-b-plus">B+</td><td>3.25</td></tr>
+          <tr><td>6</td><td>MATH-2201</td><td>Numerical Technique Sessional</td><td>1.00</td><td class="grade-b">B</td><td>3.00</td></tr>
+          <tr><td>7</td><td>GEED-2201</td><td>Sciences of Qur'an and Hadith</td><td>1.00</td><td class="grade-c-plus">A+</td><td>4.00</td></tr>
+          <tr><td>8</td><td>MATH-2203</td><td>Mathematics III (Linear Algebra, Matrices & Vector Analysis)</td><td>3.00</td><td class="grade-c-plus">A+</td><td>4.00</td></tr>
+          <tr><td>9</td><td>ME-1201</td><td>Fundamentals of Mechanical Engineering</td><td>2.00</td><td class="grade-c">A</td><td>3.75</td></tr>
+          <tr><td>10</td><td>STAT-2201</td><td>Probability and Statistics</td><td>2.00</td><td class="grade-w">A-</td><td>3.75</td></tr>
+        </tbody>
+        <tfoot>
+          <tr class="total-row">
+            <td colspan="3">Total Credit</td>
+            <td>21</td>
+            <td colspan="2">SGPA</td>
+            <td class="gpa-row">3.44</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="cgpa-box">
+      <div class="label">Current Semester GPA</div>
+      <div class="value medium">3.44</div>
+    </div>
+  </div>
+
+  <div class="logout-section">
+    <button class="btn btn-secondary" onclick="showLogoutModal()">
+      <span>🚪</span> Sign Out
     </button>
-  </a>
+  </div>
 </div>
+
+<!-- LOGOUT CONFIRMATION MODAL -->
+<div class="modal-overlay" id="logoutModal" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3>Sign Out</h3>
+    <p>Are you sure you want to sign out?</p>
+    <div class="modal-buttons">
+      <button class="btn" onclick="closeLogoutModal()">Cancel</button>
+      <button class="btn btn-secondary" onclick="logout()">Sign Out</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== LOGIN FUNCTION =====
+function handleLogin(event) {
+  event.preventDefault();
+  
+  const usernameInput = document.getElementById('user');
+  const passwordInput = document.getElementById('pass');
+  const errorMsg = document.getElementById('error');
+  const loginBtn = document.getElementById('loginBtn');
+  
+  const username = usernameInput.value.trim();
+  const password = passwordInput.value.trim();
+  
+  // Clear previous errors
+  clearErrors();
+  
+  // Validation
+  let hasError = false;
+  
+  if (!username) {
+    showError('user-error', 'Username is required');
+    usernameInput.classList.add('error');
+    hasError = true;
+  }
+  
+  if (!password) {
+    showError('pass-error', 'Password is required');
+    passwordInput.classList.add('error');
+    hasError = true;
+  }
+  
+  if (hasError) return;
+  
+  // Show loading state
+  loginBtn.classList.add('loading');
+  loginBtn.disabled = true;
+  
+  // Simulate login delay (for demo purposes)
+  setTimeout(() => {
+    // Check credentials (demo: username="student", password="1234")
+    if (username.toLowerCase() === 'student' && password === '1234') {
+      // Success - show result card
+      document.getElementById('loginBox').style.display = 'none';
+      document.getElementById('resultCard').classList.add('show');
+      
+      // Clear form
+      usernameInput.value = '';
+      passwordInput.value = '';
+    } else {
+      // Error - show error message
+      errorMsg.textContent = 'Invalid username or password';
+      errorMsg.classList.add('show');
+      usernameInput.classList.add('error');
+      passwordInput.classList.add('error');
+    }
+    
+    // Remove loading state
+    loginBtn.classList.remove('loading');
+    loginBtn.disabled = false;
+  }, 1000);
+}
+
+// ===== ERROR HANDLING =====
+function showError(elementId, message) {
+  const errorElement = document.getElementById(elementId);
+  if (errorElement) {
+    errorElement.textContent = message;
+    errorElement.classList.add('show');
+  }
+}
+
+function clearErrors() {
+  const errorMessages = document.querySelectorAll('.error-message');
+  errorMessages.forEach(msg => {
+    if (msg.id !== 'error') {
+      msg.classList.remove('show');
+      msg.textContent = '';
+    }
+  });
+  
+  const errorMsg = document.getElementById('error');
+  errorMsg.classList.remove('show');
+  errorMsg.textContent = '';
+  
+  const inputs = document.querySelectorAll('input');
+  inputs.forEach(input => input.classList.remove('error'));
+}
+
+// ===== LOGOUT FUNCTIONS =====
+function showLogoutModal() {
+  document.getElementById('logoutModal').classList.add('show');
+}
+
+function closeLogoutModal() {
+  document.getElementById('logoutModal').classList.remove('show');
+}
+
+function closeModal(event) {
+  if (event.target.classList.contains('modal-overlay')) {
+    closeLogoutModal();
+  }
+}
+
+function logout() {
+  document.getElementById('resultCard').classList.remove('show');
+  document.getElementById('loginBox').style.display = 'block';
+  closeLogoutModal();
+  clearErrors();
+}
+
+// ===== KEYBOARD ACCESSIBILITY =====
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    closeLogoutModal();
+  }
+});
+
+// ===== INPUT EVENT LISTENERS =====
+document.getElementById('user').addEventListener('input', function() {
+  this.classList.remove('error');
+  document.getElementById('user-error').classList.remove('show');
+});
+
+document.getElementById('pass').addEventListener('input', function() {
+  this.classList.remove('error');
+  document.getElementById('pass-error').classList.remove('show');
+});
+</script>
 
 </body>
 </html>
